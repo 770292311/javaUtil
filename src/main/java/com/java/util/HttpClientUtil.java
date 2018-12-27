@@ -23,12 +23,14 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import sun.misc.BASE64Encoder;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,7 +173,8 @@ public class HttpClientUtil {
             HttpResponse httpResponse = httpClient.execute(httpPost);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if(statusCode!=HttpStatus.SC_OK){
-                log.error("token请求失败，失败原因{}",httpResponse.getStatusLine());
+//                log.error("token请求失败，失败原因{}",httpResponse.getStatusLine());
+                throw new RuntimeException("token请求失败，失败原因:"+httpResponse.getStatusLine());
             }
             HttpEntity ResEntity = httpResponse.getEntity();
             //处理返回数据
@@ -186,29 +189,10 @@ public class HttpClientUtil {
 
 
     public static void main(String[] args) {
-        /*HashMap params=new HashMap();
-        params.put("key","d5297b5b745eba2ded1abb3fe0b86fbb");
-        String url="http://v.juhe.cn/historyWeather/province";
-        doGet03(params,url);*/
+        String res = doPostToken("https://apistage.huilianyi.com/oauth/token", "f0e9fc23-a148-479e-8147-fb6ed4eaeacf", "OTRkZDQ4NjgtMDJjOC00NjNiLTkzNDctYWEwYzgxMTBlZmY2");
+        System.out.println(res);
 
-       /*String url="http://stage.huilianyi.com/api/open/flight/transactions";
-       JSONObject params=new JSONObject();
-       params.put("CompanyOID","b59da2bd-0b2c-4e65-8d24-6abd3fa1dac2");
-       params.put("BatchNo","20180701");
-       params.put("DateFrom","2018-01-01 00:00:00");
-       params.put("DateTo","2018-01-01 00:00:00");
-       params.put("Page","0");
-       params.put("Size","1");
-       doPostWithJson(params,url);*/
 
-//       String url="http://stage.huilianyi.com/oauth/token";
-
-        HashMap params=new HashMap();
-        params.put("key1","value1");
-        params.put("key2","value2");
-        params.put("key3","value3");
-        String url="http://v.juhe.cn/historyWeather/province";
-        doGet02(params,url);
     }
 }
 
